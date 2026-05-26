@@ -2,6 +2,38 @@
 
 一个容器化的开发环境，集成了 OpenCode WebUI 和多种编程语言工具链。
 
+## 快速开始
+
+### 使用 Docker Compose（推荐）
+
+```bash
+docker compose up -d
+```
+
+访问 http://localhost:4096
+
+默认账号密码：
+- 用户名：`ubuntu`
+- 密码：`ubuntu`
+
+### 使用 Docker 命令
+
+```bash
+docker run -d \
+  -p 4096:4096 \
+  -p 9999:9999 \
+  -p 8888:8888 \
+  -v $(pwd)/workspace:/workspace \
+  --name opencode-webui \
+  lietxia/opencode:latest
+```
+
+### 进入容器交互式终端
+
+```bash
+docker exec -it opencode-webui bash
+```
+
 ## 功能特性
 
 - **OpenCode WebUI** — AI 驱动的代码编辑器
@@ -16,42 +48,6 @@
 - **uv** — Python 包管理器
 - **rclone** — 云存储同步工具
 - **magic-wormhole** — 安全文件传输工具
-
-## 快速开始
-
-### 使用 Docker Compose（推荐）
-
-```bash
-docker-compose up -d
-```
-
-访问 http://localhost:4096
-
-默认账号密码：
-- 用户名：`ubuntu`
-- 密码：`ubuntu`
-
-### 使用 Docker 命令
-
-```bash
-# 构建镜像
-docker build -t opencode-dev:latest .
-
-# 运行容器
-docker run -d \
-  -p 4096:4096 \
-  -p 9999:9999 \
-  -p 8888:8888 \
-  -v $(pwd)/workspace:/root/workspace \
-  --name opencode-dev \
-  opencode-dev:latest
-```
-
-### 进入容器交互式终端
-
-```bash
-docker exec -it opencode-dev bash
-```
 
 ## 端口说明
 
@@ -109,22 +105,29 @@ git --version
 .
 ├── Dockerfile          # 镜像构建文件
 ├── docker-compose.yml  # Docker Compose 配置
+├── build.sh            # 本地构建脚本
 ├── README.md           # 本文件
-├── workspace/          # 工作目录（挂载到容器 /root/workspace）
+├── workspace/          # 工作目录（挂载到容器 /workspace）
 └── .gitignore
 ```
 
 ## 数据持久化
 
-- `./workspace/` → 容器内的 `/root/workspace/`（代码和项目文件）
-- `cfg` 卷 → 容器内的 `/root/.opencode/`（OpenCode 配置）
+- `./workspace/` → 容器内的 `/workspace/`（代码和项目文件）
 
-## 重新构建
+## 本地构建
 
-修改 Dockerfile 后，需要重新构建镜像：
+如需自定义构建镜像：
 
 ```bash
-docker-compose up -d --build
+./build.sh                        # 默认 tag: lietxia/opencode:latest
+./build.sh lietxia/opencode:v1.0  # 自定义 tag
+```
+
+构建完成后推送到 Docker Hub：
+
+```bash
+docker push lietxia/opencode:latest
 ```
 
 ## 技术栈版本
@@ -142,6 +145,10 @@ docker-compose up -d --build
 ## 注意事项
 
 - 容器以 `root` 用户运行
-- 工作目录为 `/root/workspace`
+- 工作目录为 `/workspace`
 - 网络模式为 `bridge`
 - 容器重启策略：`unless-stopped`
+
+## Docker Hub
+
+镜像地址：[lietxia/opencode](https://hub.docker.com/r/lietxia/opencode)

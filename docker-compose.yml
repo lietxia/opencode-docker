@@ -1,8 +1,8 @@
 name: opencode
 services:
   opencode:
-    #image: opencode-webui-workspace:latest
-    build: .
+    image: lietxia/opencode:latest
+    # build: .
     container_name: opencode-webui
     network_mode: bridge
     ports:

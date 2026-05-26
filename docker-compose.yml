@@ -1,14 +1,26 @@
+name: opencode
 services:
   opencode:
+    #image: opencode-webui-workspace:latest
     build: .
-    container_name: opencode-web
-    restart: unless-stopped
-    working_dir: /workspace
-    entrypoint: ["/bin/sh", "-lc"]
-    command:
-      - exec opencode web --hostname 0.0.0.0 --port 4096
+    container_name: opencode-webui
+    network_mode: bridge
     ports:
-      - "18080:4096"
+      - 4096:4096
+      - 9999:9999
+      - 8888:8888
+    environment:
+      OPENCODE_SERVER_USERNAME: ubuntu
+      OPENCODE_SERVER_PASSWORD: ubuntu
+      OPENCODE_PORT: 4096
+      OPENCODE_HOSTNAME: 0.0.0.0
+      #OPENCODE_CONFIG_DIR: /root/.config/opencode
     volumes:
       - ./workspace/:/workspace/
-      - ./home:/root/
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:4096"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 40s

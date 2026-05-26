@@ -1,154 +1,131 @@
-# OpenCode Docker 开发环境
+# OpenCode Docker
 
-一个容器化的开发环境，集成了 OpenCode WebUI 和多种编程语言工具链。
+Containerized development environment with [OpenCode](https://opencode.ai) WebUI and multi-language toolchain.
 
-## 快速开始
+[![Docker Hub](https://img.shields.io/docker/v/lietxia/opencode/latest?label=Docker%20Hub\&logo=docker)](https://hub.docker.com/r/lietxia/opencode)
+[![GHCR](https://img.shields.io/badge/GHCR-lietxia%2Fopencode-blue?logo=github)](https://github.com/lietxia/opencode-docker/pkgs/container/opencode)
 
-### 使用 Docker Compose（推荐）
+## Quick Start
 
 ```bash
+# Clone
+git clone https://github.com/lietxia/opencode-docker.git
+cd opencode-docker
+
+# Start
 docker compose up -d
 ```
 
-访问 http://localhost:4096
+Open http://localhost:4096
 
-默认账号密码：
-- 用户名：`ubuntu`
-- 密码：`ubuntu`
+| | Default |
+|---|---|
+| Username | \`ubuntu\` |
+| Password | \`ubuntu\` |
 
-### 使用 Docker 命令
+## Container Registry
+
+| Registry | Image |
+|---|---|
+| Docker Hub | \`docker pull lietxia/opencode:latest\` |
+| GitHub Container Registry | \`docker pull ghcr.io/lietxia/opencode:latest\` |
+
+### Pull & Run directly
 
 ```bash
-docker run -d \
-  -p 4096:4096 \
-  -p 9999:9999 \
-  -p 8888:8888 \
-  -v $(pwd)/workspace:/workspace \
-  --name opencode-webui \
-  lietxia/opencode:latest
+docker run -d   -p 4096:4096   -p 9999:9999   -p 8888:8888   -v \$(pwd)/workspace:/workspace   --name opencode-webui   lietxia/opencode:latest
 ```
 
-### 进入容器交互式终端
+## Included Tools
+
+| Tool | Version | Description |
+|---|---|---|
+| **OpenCode** | latest | AI-powered code editor |
+| **Python** | 3.13 | Data science \& scripting |
+| **Node.js** | LTS | JavaScript/TypeScript runtime |
+| **Bun** | latest | High-performance JS runtime |
+| **Go** | 1.23.5 | Systems programming |
+| **Rust** | latest | Systems programming |
+| **Java** | OpenJDK 21 LTS | Enterprise platform |
+| **Maven** | repo version | Java build tool |
+| **PHP** | repo version | Web development |
+| **uv** | latest | Python package manager |
+| **rclone** | repo version | Cloud storage sync |
+| **magic-wormhole** | repo version | Secure file transfer |
+
+## Ports
+
+| Port | Service |
+|---|---|
+| 4096 | OpenCode WebUI |
+| 9999 | Reserved |
+| 8888 | Reserved |
+
+## Environment Variables
+
+| Variable | Description | Default |
+|---|---|---|
+| \`OPENCODE_SERVER_USERNAME\` | WebUI login username | \`ubuntu\` |
+| \`OPENCODE_SERVER_PASSWORD\` | WebUI login password | \`ubuntu\` |
+| \`OPENCODE_PORT\` | WebUI listen port | \`4096\` |
+| \`OPENCODE_HOSTNAME\` | WebUI bind address | \`0.0.0.0\` |
+
+## Data Persistence
+
+| Host path | Container path | Purpose |
+|---|---|---|
+| \`./workspace/\` | \`/workspace/\` | Project files |
+
+## Build from Source
+
+```bash
+# Default tag
+./build.sh
+
+# Custom tag
+./build.sh lietxia/opencode:v1.0
+```
+
+Push to registry:
+
+```bash
+# Docker Hub
+docker push lietxia/opencode:latest
+
+# GHCR
+docker push ghcr.io/lietxia/opencode:latest
+```
+
+## Shell Access
 
 ```bash
 docker exec -it opencode-webui bash
 ```
 
-## 功能特性
-
-- **OpenCode WebUI** — AI 驱动的代码编辑器
-- **Python 3.13** — 数据科学、脚本开发
-- **Node.js (LTS)** — JavaScript/TypeScript 运行时
-- **Bun** — 高性能 JavaScript 运行时
-- **Go 1.23.5** — 系统编程语言
-- **Rust** — 系统编程语言
-- **Java 21 (OpenJDK LTS)** — 企业级编程平台
-- **Maven** — Java 项目构建工具
-- **PHP** — Web 开发语言
-- **uv** — Python 包管理器
-- **rclone** — 云存储同步工具
-- **magic-wormhole** — 安全文件传输工具
-
-## 端口说明
-
-| 端口 | 用途 |
-|------|------|
-| 4096 | OpenCode WebUI |
-| 9999 | 预留端口 |
-| 8888 | 预留端口 |
-
-## 环境变量
-
-| 变量名 | 说明 | 默认值 |
-|--------|------|--------|
-| `OPENCODE_SERVER_USERNAME` | WebUI 登录用户名 | `ubuntu` |
-| `OPENCODE_SERVER_PASSWORD` | WebUI 登录密码 | `ubuntu` |
-| `OPENCODE_PORT` | WebUI 监听端口 | `4096` |
-| `OPENCODE_HOSTNAME` | WebUI 绑定地址 | `0.0.0.0` |
-
-## 容器内可用工具
+## Verify Installation
 
 ```bash
-# Python
-python3 --version
-python --version
-uv --version
-
-# JavaScript/TypeScript
-node --version
-npm --version
-bun --version
-
-# Go
-go version
-
-# Rust
-rustc --version
-cargo --version
-
-# Java
-java --version
-mvn --version
-
-# PHP
-php --version
-
-# 其他工具
-rclone version
-wormhole --version
-git --version
+docker exec opencode-webui bash -c \'
+  python3 --version  &&
+  node --version     &&
+  go version         &&
+  rustc --version    &&
+  java --version     &&
+  php --version
+\'
 ```
 
-## 目录结构
+## Project Structure
 
 ```
 .
-├── Dockerfile          # 镜像构建文件
-├── docker-compose.yml  # Docker Compose 配置
-├── build.sh            # 本地构建脚本
-├── README.md           # 本文件
-├── workspace/          # 工作目录（挂载到容器 /workspace）
-└── .gitignore
+├── Dockerfile          # Image definition
+├── docker-compose.yml  # Compose config (pulls from registry)
+├── build.sh            # Local build script
+├── README.md
+└── workspace/          # Mounted work directory
 ```
 
-## 数据持久化
+## License
 
-- `./workspace/` → 容器内的 `/workspace/`（代码和项目文件）
-
-## 本地构建
-
-如需自定义构建镜像：
-
-```bash
-./build.sh                        # 默认 tag: lietxia/opencode:latest
-./build.sh lietxia/opencode:v1.0  # 自定义 tag
-```
-
-构建完成后推送到 Docker Hub：
-
-```bash
-docker push lietxia/opencode:latest
-```
-
-## 技术栈版本
-
-| 工具 | 版本 |
-|------|------|
-| Ubuntu | 24.04 |
-| Python | 3.13 |
-| Node.js | LTS |
-| Go | 1.23.5 |
-| Java | OpenJDK 21 |
-| Maven | 随 Ubuntu 仓库版本 |
-| PHP | 随 Ubuntu 仓库版本 |
-
-## 注意事项
-
-- 容器以 `root` 用户运行
-- 工作目录为 `/workspace`
-- 网络模式为 `bridge`
-- 容器重启策略：`unless-stopped`
-
-## Docker Hub
-
-镜像地址：[lietxia/opencode](https://hub.docker.com/r/lietxia/opencode)
+MIT

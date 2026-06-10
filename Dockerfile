@@ -18,11 +18,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 RUN curl -fsSL https://bun.sh/install | bash
 
 # npm 全局工具
-RUN npm i -g opencode-ai @openai/codex yarn pnpm
-
-# uv + Claude Code
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
-    && curl -fsSL https://claude.ai/install.sh | bash
+RUN npm i -g opencode-ai yarn pnpm
 
 ENV PATH="/root/.cargo/bin:/root/.bun/bin:/root/.local/bin:${PATH}"
 

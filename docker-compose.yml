@@ -15,6 +15,6 @@ services:
       OPENCODE_HOSTNAME: 0.0.0.0
     volumes:
       - ./workspace/:/workspace/
-      - ./config/:/root/.config/opencode/
+      - ./config/:/root/.config/
       - ./data/:/root/.local/share/opencode
     restart: unless-stopped

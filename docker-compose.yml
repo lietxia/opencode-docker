@@ -9,11 +9,12 @@ services:
       - 9999:9999
       - 8888:8888
     environment:
-      OPENCODE_SERVER_USERNAME: ubuntu
-      OPENCODE_SERVER_PASSWORD: ubuntu
+      #OPENCODE_SERVER_USERNAME: ubuntu
+      #OPENCODE_SERVER_PASSWORD: ubuntu
       OPENCODE_PORT: 4096
       OPENCODE_HOSTNAME: 0.0.0.0
     volumes:
       - ./workspace/:/workspace/
-      - ./opencode_config/:/root/.config/opencode/
+      - ./config/:/root/.config/opencode/
+      - ./data/:/root/.local/share/opencode
     restart: unless-stopped

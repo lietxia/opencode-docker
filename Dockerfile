@@ -3,11 +3,8 @@ FROM ubuntu:26.04
 # 系统依赖 + Node.js + Python 符号链接
 RUN apt-get update && apt-get install -y \
     curl wget git build-essential ca-certificates \
-    unzip zip jq htop tmux openssh-client \
-    && curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
-    && apt-get install -y \
+    unzip zip jq htop tmux openssh-client npm \
     default-jdk maven composer rclone golang-go python3-pip magic-wormhole \
-    nodejs \
     && rm -rf /var/lib/apt/lists/* \
     && ln -sf /usr/bin/python3 /usr/bin/python
 

@@ -19,7 +19,7 @@ RUN npm i -g opencode-ai yarn pnpm
 
 ENV PATH="/root/.cargo/bin:/root/.bun/bin:/root/.local/bin:${PATH}"
 
-WORKDIR /workspace
+WORKDIR /code
 
 ENTRYPOINT ["opencode"]
 CMD ["web", "--port", "4096", "--hostname", "0.0.0.0"]
